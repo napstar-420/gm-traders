@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
@@ -12,8 +12,8 @@ const TypeSchema = new Schema({
 });
 
 // eslint-disable-next-line func-names
-TypeSchema.virtual("url").get(function () {
+TypeSchema.virtual('url').get(function () {
   return `/shop/type/${this._id}`;
 });
 
-module.exports = mongoose.model("Type", TypeSchema);
+module.exports = mongoose.model('Type', TypeSchema);

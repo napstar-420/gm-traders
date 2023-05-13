@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 // eslint-disable-next-line import/no-extraneous-dependencies
-const validator = require("validator");
+const validator = require('validator');
 
 const { Schema } = mongoose;
 
@@ -21,7 +21,7 @@ const CustomerSchema = new Schema({
     unique: true,
     validate: {
       validator: validator.default.isEmail,
-      message: "{VALUE} is not a valid email address",
+      message: '{VALUE} is not a valid email address',
     },
   },
   mobileNumber: {
@@ -35,12 +35,12 @@ const CustomerSchema = new Schema({
     Country: {
       type: String,
       required: true,
-      enum: ["Pakistan"],
+      enum: ['Pakistan'],
     },
     state: {
       type: String,
       required: true,
-      enum: ["Punjab", "Sindh", "Khyber Pakhutun khawan", "Balochistan"],
+      enum: ['Punjab', 'Sindh', 'Khyber Pakhutun khawan', 'Balochistan'],
     },
     city: {
       type: String,
@@ -56,7 +56,7 @@ const CustomerSchema = new Schema({
     {
       product: {
         type: Schema.Types.ObjectId,
-        ref: "Product",
+        ref: 'Product',
         required: true,
       },
       quantity: {
@@ -75,14 +75,14 @@ const CustomerSchema = new Schema({
     {
       type: Schema.Types.ObjectId,
       required: true,
-      ref: "Order",
+      ref: 'Order',
     },
   ],
 });
 
 // eslint-disable-next-line func-names
-CustomerSchema.virtual("url").get(function () {
+CustomerSchema.virtual('url').get(function () {
   return `/shop/customer/${this._id}`;
 });
 
-module.exports = mongoose.model("Customer", CustomerSchema);
+module.exports = mongoose.model('Customer', CustomerSchema);

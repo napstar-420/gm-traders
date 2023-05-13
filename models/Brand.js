@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
@@ -14,8 +14,8 @@ const BrandSchema = new Schema({
 });
 
 // eslint-disable-next-line func-names
-BrandSchema.virtual("url").get(function () {
+BrandSchema.virtual('url').get(function () {
   return `/shop/brand/${this._id}`;
 });
 
-module.exports = mongoose.model("Brand", BrandSchema);
+module.exports = mongoose.model('Brand', BrandSchema);

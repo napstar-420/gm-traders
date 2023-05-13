@@ -1,16 +1,16 @@
-require("dotenv").config();
-const mongoose = require("mongoose");
-const debug = require("debug")("*");
+require('dotenv').config();
+const mongoose = require('mongoose');
+const debug = require('debug')('*');
 
 async function main() {
   try {
-    mongoose.set("strictQuery", false);
+    mongoose.set('strictQuery', false);
     await mongoose.connect(process.env.DB_CONNECTION, {
-      dbName: "gm_traders",
+      dbName: 'gm_traders',
     });
-    debug("DATABASE CONNECTED");
+    debug('DATABASE CONNECTED');
   } catch (error) {
-    debug("DATABASE ERROR");
+    debug('DATABASE ERROR');
     debug(error);
   }
 }

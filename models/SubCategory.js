@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
 const { Schema } = mongoose;
 
@@ -12,8 +12,8 @@ const SubCategorySchema = new Schema({
 });
 
 // eslint-disable-next-line func-names
-SubCategorySchema.virtual("url").get(function () {
+SubCategorySchema.virtual('url').get(function () {
   return `/shop/subcategory/${this._id}`;
 });
 
-module.exports = mongoose.model("SubCategory", SubCategorySchema);
+module.exports = mongoose.model('SubCategory', SubCategorySchema);

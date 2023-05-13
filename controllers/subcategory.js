@@ -2,24 +2,36 @@
 const mongoose = require('mongoose');
 const async = require('async');
 const { body, validationResult } = require('express-validator');
-const Category = require('../models/Category');
 const Product = require('../models/Product');
 const SubCategory = require('../models/SubCategory');
 const Type = require('../models/Type');
 const messages = require('../config/error_messages');
+const Category = require('../models/Category');
 
-function getAllCategories(req, res) {
-  Category.find()
+function getAllSubCategories(req, res) {
+  SubCategory.find()
     .exec()
-    .then((categories) => res.json(categories))
+    .then((result) => res.json(result))
     .catch((err) => res.json(err));
 }
 
-const createCategory = [
+const createSubCategory = [
   body('name', 'Name is required')
     .trim()
     .escape()
     .isLength({ min: 1, max: 50 }),
+
+  body('category')
+    .trim()
+    .escape()
+    .notEmpty()
+    .withMessage(messages.category.required)
+    .custom(async (value) => {
+      await Category.findById(value)
+        .exec()
+        .then((result) => result !== null);
+    })
+    .withMessage(messages.category.notFound),
 
   (req, res, next) => {
     const errors = validationResult(req);
@@ -30,13 +42,15 @@ const createCategory = [
   },
 
   (req, res, next) => {
-    Category.findOne({ name: req.body.name })
+    SubCategory.findOne({ name: req.body.name })
       .exec()
-      .then((category) => {
-        if (category === null) {
+      .then((result) => {
+        if (result === null) {
           return next();
         }
-        return res.status(406).json({ message: messages.category.alreadyExists });
+        return res
+          .status(406)
+          .json({ message: messages.subCategory.alreadyExists });
       })
       .catch((err) => (
         res.status(500).json({ message: messages.somethingWentWrong, err })
@@ -44,19 +58,20 @@ const createCategory = [
   },
 
   async (req, res) => {
-    const category = new Category({
+    const subCategory = new SubCategory({
       name: req.body.name,
+      category: req.body.category,
     });
     try {
-      await category.save();
-      res.json({ message: messages.category.created, category });
+      await subCategory.save();
+      res.json({ message: messages.subCategory.created, subCategory });
     } catch (err) {
       res.status(500).json({ message: messages.somethingWentWrong, err });
     }
   },
 ];
 
-function getCategory(req, res) {
+function getSubCategory(req, res) {
   const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -68,22 +83,23 @@ function getCategory(req, res) {
 
   return async.parallel(
     [
-      function category(done) {
-        Category.findById(id)
+      function subCategory(done) {
+        SubCategory.findById(id)
           .exec()
           .then((result) => (
             result === null
-              ? done({ message: messages.category.notFound })
+              ? done({ message: messages.subCategory.notFound })
               : done(null, result)
           ))
           .catch((err) => res.status(500).json({ err }));
       },
 
       function products(done) {
-        Product.find({ category: id })
+        Product.find({ subCategory: id })
           .select({ images: -1, description: -1, numberOfItems: -1 })
           .populate('Brand')
           .populate('Category')
+          .populate('SubCategory')
           .populate('Type')
           .exec()
           .then((result) => done(null, result))
@@ -93,7 +109,7 @@ function getCategory(req, res) {
 
     (err, results) => {
       if (err) {
-        if (err.message === messages.category.notFound) {
+        if (err.message === messages.subCategory.notFound) {
           res.status(404);
         } else {
           res.status(500);
@@ -105,8 +121,11 @@ function getCategory(req, res) {
   );
 }
 
-function deleteCategory(req, res) {
+function deleteSubCategory(req, res) {
   const { id } = req.body;
+  if (!id) {
+    return res.status(400).json({ message: 'ID is required' });
+  }
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ message: messages.idInvalid, id });
   }
@@ -114,59 +133,53 @@ function deleteCategory(req, res) {
   return async.series(
     {
       check(done) {
-        Category.findById(id)
+        SubCategory.findById(id)
           .exec()
-          .then((category) => {
-            if (category === null) {
-              done({ message: messages.category.notFound });
+          .then((result) => {
+            if (result === null) {
+              done({ message: messages.subCategory.notFound });
             } else {
               done(null);
             }
           });
       },
       products(done) {
-        Product.deleteMany({ category: id })
+        Product.deleteMany({ subCategory: id })
           .exec()
           .then(() => done(null))
           .catch(() => done({ message: messages.somethingWentWrong }));
       },
       types(done) {
-        Type.deleteMany({ category: id })
+        Type.deleteMany({ subCategory: id })
           .exec()
           .then(() => done(null))
           .catch(() => done({ message: messages.somethingWentWrong }));
       },
-      subCategories(done) {
-        SubCategory.deleteMany({ category: id })
+      subCategory(done) {
+        SubCategory.deleteOne({ _id: id })
           .exec()
           .then(() => done(null))
           .catch(() => done({ message: messages.somethingWentWrong }));
-      },
-      category(done) {
-        Category.deleteMany({ _id: id })
-          .exec()
-          .then(() => done(null))
-          .catch(() => done({ message: 'messages.somethingWentWrong' }));
       },
     },
 
     (error) => {
       if (error) {
-        if (error.message === messages.category.notFound) {
+        if (error.message === messages.subCategory.notFound) {
           res.status(400);
         } else {
           res.status(500);
         }
         return res.json(error);
       }
-      return res.json({ message: messages.category.deleted });
+      return res.json({ message: messages.subCategory.deleted });
     },
   );
 }
 
 module.exports = {
-  getAllCategories,
-  createCategory,
-  getCategory,
-  deleteCategory,
+  getAllSubCategories,
+  createSubCategory,
+  getSubCategory,
+  deleteSubCategory,
 };

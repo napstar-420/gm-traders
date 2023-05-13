@@ -9,6 +9,16 @@ const TypeSchema = new Schema({
     unique: true,
     maxLength: 100,
   },
+  subCategory: {
+    type: Schema.Types.ObjectId,
+    ref: 'SubCategory',
+    required: true,
+  },
+  category: {
+    type: Schema.Types.ObjectId,
+    ref: 'category',
+    required: true,
+  },
 });
 
 // eslint-disable-next-line func-names

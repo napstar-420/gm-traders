@@ -9,6 +9,11 @@ const SubCategorySchema = new Schema({
     unique: true,
     maxLength: 100,
   },
+  category: {
+    type: Schema.Types.ObjectId,
+    ref: 'Category',
+    required: true,
+  },
 });
 
 // eslint-disable-next-line func-names

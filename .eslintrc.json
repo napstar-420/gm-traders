@@ -12,10 +12,11 @@
     },
     "rules": {
         "comma-dangle": 1,
-        "quotes":[2, "double"],
+        "quotes":[2, "single"],
         "Linebreak-style":0,
         "no-unused-vars": 0,
         "no-underscore-dangle": 0,
-        "max-len": 0
+        "max-len": 0,
+        "camelcase": 2
     }
 }

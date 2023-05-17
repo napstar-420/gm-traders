@@ -1,5 +1,6 @@
 const messages = {
   idInvalid: 'ID is not valid',
+  idRequired: 'ID is required',
   somethingWentWrong: 'Something went wrong',
   category: {
     notFound: 'Category not found',
@@ -14,6 +15,13 @@ const messages = {
     created: 'SubCategory created',
     deleted: 'SubCategory deleted',
     required: 'SubCategory is required',
+  },
+  type: {
+    notFound: 'Type not found',
+    alreadyExists: 'Type already exists',
+    created: 'Type created',
+    deleted: 'Type deleted',
+    required: 'Type is required',
   },
 };
 

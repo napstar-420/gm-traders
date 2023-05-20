@@ -2,6 +2,7 @@
 const mongoose = require('mongoose');
 const async = require('async');
 const { body, validationResult } = require('express-validator');
+const debug = require('debug')('*');
 const Product = require('../models/Product');
 const SubCategory = require('../models/SubCategory');
 const Type = require('../models/Type');
@@ -29,7 +30,11 @@ const createType = [
     .custom(async (value) => {
       await Category.findById(value)
         .exec()
-        .then((result) => result !== null);
+        .then((result) => result !== null)
+        .catch((err) => {
+          debug(err);
+          return false;
+        });
     })
     .withMessage(messages.category.notFound),
 
@@ -41,7 +46,11 @@ const createType = [
     .custom(async (value) => {
       await SubCategory.findById(value)
         .exec()
-        .then((result) => result !== null);
+        .then((result) => result !== null)
+        .catch((err) => {
+          debug(err);
+          return false;
+        });
     })
     .withMessage(messages.subCategory.notFound),
 
@@ -76,7 +85,7 @@ const createType = [
     const type = new Type({
       name: req.body.name,
       category: req.body.category,
-      subcategory: req.body.subcategory,
+      subCategory: req.body.subcategory,
     });
     try {
       await type.save();

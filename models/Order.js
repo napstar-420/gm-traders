@@ -20,7 +20,6 @@ const OrderSchema = new Schema({
 // eslint-disable-next-line func-names
 OrderSchema.virtual('total').get(function () {
   let total = 0;
-  // eslint-disable-next-line no-plusplus
   for (let i = 0; i < this.items.length; i++) {
     const item = this.items[i];
     total += item.product.price * item.quantity;

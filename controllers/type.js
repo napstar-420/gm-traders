@@ -38,7 +38,7 @@ const createType = [
     })
     .withMessage(messages.category.notFound),
 
-  body('subcategory')
+  body('subCategory')
     .trim()
     .escape()
     .notEmpty()
@@ -85,7 +85,7 @@ const createType = [
     const type = new Type({
       name: req.body.name,
       category: req.body.category,
-      subCategory: req.body.subcategory,
+      subCategory: req.body.subCategory,
     });
     try {
       await type.save();
@@ -121,11 +121,6 @@ function getType(req, res) {
 
       function products(done) {
         Product.find({ type: id })
-          .select({ images: -1, description: -1, numberOfItems: -1 })
-          .populate('Brand')
-          .populate('Category')
-          .populate('SubCategory')
-          .populate('Type')
           .exec()
           .then((result) => done(null, result))
           .catch((err) => done({ message: messages.somethingWentWrong, err }));

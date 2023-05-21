@@ -1,3 +1,5 @@
+const config = require('./config');
+
 const messages = {
   idInvalid: 'ID is not valid',
   idRequired: 'ID is required',
@@ -22,6 +24,33 @@ const messages = {
     created: 'Type created',
     deleted: 'Type deleted',
     required: 'Type is required',
+  },
+  product: {
+    notFound: 'Product not found',
+    alreadyExists: 'Product already exists',
+    created: 'Product created',
+    deleted: 'Product deleted',
+    required: 'Product is required',
+  },
+  validation: {
+    name: {
+      isRequired: 'Name is required',
+      length: 'Length should be in less than or equal to 100',
+    },
+    description: {
+      isRequired: 'Description is required',
+    },
+    size: {
+      correct: `Size should be from the following values ${Object.values(config.product.sizes)}`,
+    },
+    color: {
+      isRequired: 'Color is required',
+      length: 'Color length should be less than or equal to 50',
+    },
+    thumbnail: {
+      isRequired: 'Thumbnail is required',
+      correctMimetype: `Image mimetype should be correct. Acceptable mimetype are ${Object.values(config.imageMimeTypes)}`,
+    },
   },
 };
 

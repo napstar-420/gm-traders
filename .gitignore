@@ -4,6 +4,7 @@
 /dist
 /tmp
 /out-tsc
+/uploads/temp
 
 # Runtime data
 pids

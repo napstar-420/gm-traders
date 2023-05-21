@@ -2,6 +2,7 @@ const express = require('express');
 const categoryController = require('../controllers/category');
 const subCategoryController = require('../controllers/subcategory');
 const typeController = require('../controllers/type');
+const productController = require('../controllers/product');
 
 const router = express.Router();
 
@@ -19,5 +20,10 @@ router.get('/type', typeController.getAllTypes);
 router.post('/type/', typeController.createType);
 router.delete('/type/', typeController.deleteType);
 router.get('/type/:id', typeController.getType);
+
+router.get('/product', productController.getAllProducts);
+router.post('/product', productController.createProduct);
+router.delete('/product', productController.deleteProduct);
+router.get('/product/:id', productController.getProduct);
 
 module.exports = router;

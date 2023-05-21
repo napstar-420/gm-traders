@@ -19,6 +19,7 @@
         "max-len": 0,
         "camelcase": 2,
         "no-plusplus": "off",
-        "operator-linebreak": "off"
+        "operator-linebreak": "off",
+        "implicit-arrow-linebreak": "off"
     }
 }

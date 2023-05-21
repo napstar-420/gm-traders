@@ -32,6 +32,13 @@ const messages = {
     deleted: 'Product deleted',
     required: 'Product is required',
   },
+  brand: {
+    notFound: 'Brand not found',
+    alreadyExists: 'Brand already exists',
+    created: 'Brand created',
+    deleted: 'Brand deleted',
+    required: 'Brand is required',
+  },
   validation: {
     name: {
       isRequired: 'Name is required',

@@ -4,32 +4,34 @@ const subCategoryController = require('../controllers/subcategory');
 const typeController = require('../controllers/type');
 const productController = require('../controllers/product');
 const brandController = require('../controllers/brand');
+const verifyJWT = require('../middleware/verifyJWT');
 
 const router = express.Router();
 
 router.get('/category', categoryController.getAllCategories);
-router.post('/category/', categoryController.createCategory);
-router.delete('/category/', categoryController.deleteCategory);
 router.get('/category/:id', categoryController.getCategory);
-
 router.get('/subcategory', subCategoryController.getAllSubCategories);
-router.post('/subcategory/', subCategoryController.createSubCategory);
-router.delete('/subcategory/', subCategoryController.deleteSubCategory);
 router.get('/subcategory/:id', subCategoryController.getSubCategory);
-
 router.get('/type', typeController.getAllTypes);
-router.post('/type/', typeController.createType);
-router.delete('/type/', typeController.deleteType);
 router.get('/type/:id', typeController.getType);
-
 router.get('/product', productController.getAllProducts);
-router.post('/product', productController.createProduct);
-router.delete('/product', productController.deleteProduct);
 router.get('/product/:id', productController.getProduct);
-
 router.get('/brand', brandController.getAllBrands);
-router.post('/brand', brandController.createBrand);
-router.delete('/brand', brandController.deleteBrand);
 router.get('/brand/:id', brandController.getBrand);
+
+// Routes below this will require access token
+router.use(verifyJWT);
+
+router.post('/category/', categoryController.createCategory);
+router.post('/subcategory/', subCategoryController.createSubCategory);
+router.post('/type/', typeController.createType);
+router.post('/product', productController.createProduct);
+router.post('/brand', brandController.createBrand);
+
+router.delete('/category/', categoryController.deleteCategory);
+router.delete('/subcategory/', subCategoryController.deleteSubCategory);
+router.delete('/type/', typeController.deleteType);
+router.delete('/product', productController.deleteProduct);
+router.delete('/brand', brandController.deleteBrand);
 
 module.exports = router;

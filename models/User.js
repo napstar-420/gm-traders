@@ -1,18 +1,19 @@
 const mongoose = require('mongoose');
-// eslint-disable-next-line import/no-extraneous-dependencies
 const validator = require('validator');
 
 const { Schema } = mongoose;
 
-const CustomerSchema = new Schema({
+const UserSchema = new Schema({
   // Basic Information
   firstName: {
     type: String,
     required: true,
+    maxLength: 100,
   },
   lastName: {
     type: String,
     required: true,
+    maxLength: 100,
   },
   profilePicture: { type: String },
   email: {
@@ -24,9 +25,12 @@ const CustomerSchema = new Schema({
       message: '{VALUE} is not a valid email address',
     },
   },
+  password: {
+    type: String,
+    required: true,
+  },
   mobileNumber: {
     type: Number,
-    required: true,
     minLength: 0,
     maxLength: 11,
   },
@@ -34,21 +38,17 @@ const CustomerSchema = new Schema({
   address: {
     Country: {
       type: String,
-      required: true,
       enum: ['Pakistan'],
     },
     state: {
       type: String,
-      required: true,
       enum: ['Punjab', 'Sindh', 'Khyber Pakhutun khawan', 'Balochistan'],
     },
     city: {
       type: String,
-      required: true,
     },
     local: {
       type: String,
-      required: true,
     },
   },
   // Inventory
@@ -78,11 +78,17 @@ const CustomerSchema = new Schema({
       ref: 'Order',
     },
   ],
+
+  // Refresh token
+  refreshToken: {
+    type: String,
+    default: '',
+  },
 });
 
 // eslint-disable-next-line func-names
-CustomerSchema.virtual('url').get(function () {
+UserSchema.virtual('url').get(function () {
   return `/shop/customer/${this._id}`;
 });
 
-module.exports = mongoose.model('Customer', CustomerSchema);
+module.exports = mongoose.model('User', UserSchema);

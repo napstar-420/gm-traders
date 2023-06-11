@@ -1,4 +1,4 @@
-const config = require('./config');
+const config = require('./index');
 
 const messages = {
   idInvalid: 'ID is not valid',

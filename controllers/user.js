@@ -86,7 +86,12 @@ async function login(req, res) {
     await user.save();
 
     // Return the JWT as a response
-    res.cookie('jwt', refreshToken, { httpOnly: true, maxAge: 30 * 24 * 60 * 60 * 1000 });
+    res.cookie('jwt', refreshToken, {
+      httpOnly: true,
+      sameSite: 'none',
+      secure: true,
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+    });
     return res.json({ accessToken });
   } catch (error) {
     debug(error);
@@ -107,7 +112,11 @@ async function logout(req, res) {
   try {
     const user = await User.findOne({ refreshToken });
     if (!user) {
-      res.clearCookie('jwt', { httpOnly: true });
+      res.clearCookie('jwt', {
+        httpOnly: true,
+        sameSite: 'none',
+        secure: true,
+      });
       return res.sendStatus(204);
     }
 
@@ -116,7 +125,11 @@ async function logout(req, res) {
     await user.save();
 
     // remove token from cookie
-    res.clearCookie('jwt', { httpOnly: true });
+    res.clearCookie('jwt', {
+      httpOnly: true,
+      sameSite: 'none',
+      secure: true,
+    });
     return res.sendStatus(204);
   } catch (error) {
     debug(error);

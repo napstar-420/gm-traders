@@ -1,6 +1,6 @@
 const { body } = require('express-validator');
 const debug = require('debug')('*');
-const config = require('../config/config');
+const config = require('../config');
 const Type = require('../models/Type');
 const Brand = require('../models/Brand');
 const messages = require('../config/error_messages');

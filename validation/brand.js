@@ -2,7 +2,7 @@ const { body } = require('express-validator');
 const debug = require('debug')('*');
 const messages = require('../config/error_messages');
 const Brand = require('../models/Brand');
-const config = require('../config/config');
+const config = require('../config');
 
 const brandValidation = [
   body('name')

@@ -10,13 +10,15 @@ const cookieParser = require('cookie-parser');
 const dbConnection = require('./database/connection');
 const shopRoutes = require('./routes/shop');
 const authRoutes = require('./routes/auth');
-const config = require('./config/config');
+const corsOptions = require('./config/corsOptions');
+const credentials = require('./middleware/credentials');
 
 dbConnection();
 
 const app = express();
 
-app.use(cors(config.cors));
+app.use(credentials);
+app.use(cors(corsOptions));
 app.use(logger);
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
